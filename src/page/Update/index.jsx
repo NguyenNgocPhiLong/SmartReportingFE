@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import { BaseURL } from '../../config/BaseAPi';
+import { BaseURL } from '../../config/BaseApi';
 
 const Update = () => {
     // State để lưu trữ dữ liệu form
@@ -73,9 +73,13 @@ const Update = () => {
                 newErrors[key] = 'This field is required'; 
             }
         }
-        // Kiểm tra số điện thoại không chứa chữ
-        if (formData.phone && /[a-zA-Z]/.test(formData.phone)) {
-            newErrors.phone = 'Phone number cannot contain letters';
+          // Kiểm tra số điện thoại không chứa chữ
+          if (formData.phoneNumber && (!/^\d{1,10}$/.test(formData.phoneNumber))) {
+            newErrors.phoneNumber = 'Phone number must contain only numbers and be up to 10 digits';
+        }
+        // Kiểm tra số CCCD chỉ được là số và tối đa 12 chữ số
+        if (formData.identityCard && (!/^\d{1,12}$/.test(formData.identityCard))) {
+        newErrors.identityCard = 'CCCD must contain only numbers and be up to 12 digits';
         }
         // Kiểm tra ngày sinh không được ở tương lai
         if (formData.dateOfBirth && new Date(formData.dateOfBirth) > new Date()) {
@@ -171,19 +175,31 @@ const Update = () => {
                             name="phoneNumber"
                             value={formData.phoneNumber}
                             onChange={handleChange}
+                            onKeyDown={(e) => {
+                                if (!/^\d$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab') {
+                                    e.preventDefault(); // Chặn các ký tự không phải là số
+                                }
+                            }}
+                            maxLength={10}
                             className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
                         />
                         {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                     </div>
-                    {/* Trường CCCD/CMND */}
+                    {/* Trường CCCD */}
                     <div>
-                        <label className="block text-sm font-medium">CCCD/CMND</label>
+                        <label className="block text-sm font-medium">CCCD</label>
                         <input
                             type="text"
                             name="identityCard"
                             value={formData.identityCard}
                             onChange={handleChange}
                             className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
+                            onKeyDown={(e) => {
+                                if (!/^\d$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab') {
+                                    e.preventDefault(); // Chặn các ký tự không phải là số
+                                }
+                            }}
+                            maxLength={12}
                         />
                         {errors.cccd && <p className="text-red-500 text-sm mt-1">{errors.cccd}</p>}
                     </div>

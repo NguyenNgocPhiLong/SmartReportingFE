@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BaseURL } from '../../config/BaseAPi';
+import { BaseURL } from '../../config/BaseApi';
 
 const CreateUser = () => {
     // State để lưu trữ dữ liệu form
@@ -39,8 +39,12 @@ const CreateUser = () => {
             }
         }
         // Kiểm tra số điện thoại không chứa chữ
-        if (formData.phoneNumber && /[a-zA-Z]/.test(formData.phoneNumber)) {
-            newErrors.phoneNumber = 'Phone number cannot contain letters';
+        if (formData.phoneNumber && (!/^\d{1,10}$/.test(formData.phoneNumber))) {
+            newErrors.phoneNumber = 'Phone number must contain only numbers and be up to 10 digits';
+        }
+        // Kiểm tra số CCCD chỉ được là số và tối đa 12 chữ số
+        if (formData.identityCard && (!/^\d{1,12}$/.test(formData.identityCard))) {
+        newErrors.identityCard = 'CCCD must contain only numbers and be up to 12 digits';
         }
         // Kiểm tra ngày sinh không được ở tương lai
         if (formData.dateOfBirth && new Date(formData.dateOfBirth) > new Date()) {
@@ -131,7 +135,7 @@ const CreateUser = () => {
                             <option value="">Select</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
-                            <option value="lgbt">LGBT</option>
+                            <option value="other">Other </option>
                         </select>
                         {errors.sex && <p className="text-red-500 text-sm mt-1">{errors.sex}</p>}
                     </div>
@@ -144,17 +148,29 @@ const CreateUser = () => {
                             value={formData.phoneNumber}
                             onChange={handleChange}
                             className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
+                            onKeyDown={(e) => {
+                                if (!/^\d$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab') {
+                                    e.preventDefault(); // Chặn các ký tự không phải là số
+                                }
+                            }}
+                            maxLength={10}
                         />
                         {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
                     </div>
-                    {/* Trường CCCD/CMND */}
+                    {/* Trường CCCD */}
                     <div>
-                        <label className="block text-sm font-medium">CCCD/CMND</label>
+                        <label className="block text-sm font-medium">CCCD</label>
                         <input
                             type="text"
                             name="identityCard"
                             value={formData.identityCard}
                             onChange={handleChange}
+                            onKeyDown={(e) => {
+                                if (!/^\d$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab') {
+                                    e.preventDefault(); // Chặn các ký tự không phải là số
+                                }
+                            }}
+                            maxLength={12}
                             className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
                         />
                         {errors.identityCard && <p className="text-red-500 text-sm mt-1">{errors.identityCard}</p>}
@@ -215,36 +231,41 @@ const CreateUser = () => {
                         </select>
                         {errors.contract && <p className="text-red-500 text-sm mt-1">{errors.contract}</p>}
                     </div>
-                    {/* Trường Start Date */}
-                    <div>
-                        <label className="block text-sm font-medium">Start Date</label>
-                        <input
-                            type="date"
-                            name="startDate"
-                            value={formData.startDate}
-                            onChange={handleChange}
-                            className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
-                        />
-                        {errors.startDate && <p className="text-red-500 text-sm mt-1">{errors.startDate}</p>}
-                    </div>
-                    {/* Trường End Date */}
-                    <div>
-                        <label className="block text-sm font-medium">End Date</label>
-                        <input
-                            type="date"
-                            name="endDate"
-                            value={formData.endDate}
-                            onChange={handleChange}
-                            className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
-                        />
-                        {errors.endDate && <p className="text-red-500 text-sm mt-1">{errors.endDate}</p>}
-                    </div>
+                    {/* Trường Start Date và End Date */}
+<div className="grid grid-cols-1 gap-4">
+    {/* Trường Start Date */}
+    <div>
+        <label className="block text-sm font-medium">Start Date</label>
+        <input
+            type="date"
+            name="startDate"
+            value={formData.startDate}
+            onChange={handleChange}
+            className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
+        />
+        {errors.startDate && <p className="text-red-500 text-sm mt-1">{errors.startDate}</p>}
+    </div>
+
+    {/* Trường End Date nằm dưới Start Date */}
+    <div>
+        <label className="block text-sm font-medium">End Date</label>
+        <input
+            type="date"
+            name="endDate"
+            value={formData.endDate}
+            onChange={handleChange}
+            className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
+        />
+        {errors.endDate && <p className="text-red-500 text-sm mt-1">{errors.endDate}</p>}
+    </div>
+</div>
+
                 </div>
                 {/* Nút submit */}
                 <div>
                     <button
                         type="submit"
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                        className="bg-blue-500 text-white px-11 py-3 rounded-md hover:bg-blue-600"
                     >
                         Submit
                     </button>

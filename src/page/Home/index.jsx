@@ -8,7 +8,7 @@ import { formatDate, formatPhone } from '../../utils/format';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';  
-import { BaseURL } from '../../config/BaseAPi';
+import { BaseURL } from '../../config/BaseApi';
 
 
 function HomePage() {
