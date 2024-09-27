@@ -38,6 +38,7 @@ function HomePage() {
     {
       title: 'CCCD', 
       dataIndex: 'identityCard',
+      width: 150,
     },
     {
       title: 'Phone', 

@@ -163,7 +163,7 @@ const Update = () => {
                             <option value="">Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
-                            <option value="Lgbt">LGBT</option>
+                            <option value="Other">Other</option>
                         </select>
                         {errors.sex && <p className="text-red-500 text-sm mt-1">{errors.sex}</p>}
                     </div>
@@ -217,22 +217,22 @@ const Update = () => {
                         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                     </div>
                     {/* Trường Position */}
-                    <div>
-                        <label className="block text-sm font-medium">Position</label>
-                        <select
-                            name="account"
-                            value={formData.account}
-                            onChange={handleChange}
-                            className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
-                        >
-                            <option value="">Select</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Developer">Developer</option>
-                            <option value="Designer">Designer</option>
-                            <option value="Tester">Tester</option>
-                        </select>
-                        {errors.position && <p className="text-red-500 text-sm mt-1">{errors.position}</p>}
-                    </div>
+                        {/* <div>
+                            <label className="block text-sm font-medium">Position</label>
+                            <select
+                                name="account"
+                                value={formData.account}
+                                onChange={handleChange}
+                                className="mt-1 block w-full sm:w-48 px-3 py-2 border border-gray-300 rounded-md"
+                            >
+                                <option value="">Select</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Developer">Developer</option>
+                                <option value="Designer">Designer</option>
+                                <option value="Tester">Tester</option>
+                            </select>
+                            {errors.position && <p className="text-red-500 text-sm mt-1">{errors.position}</p>}
+                        </div> */}
                     {/* Trường Status */}
                     <div>
                         <label className="block text-sm font-medium">Status</label>
